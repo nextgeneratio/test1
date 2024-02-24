@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+            @import url('https://fonts.googleapis.com/css2?family=Anta&display=swap');
+  
+            body{
+                  font-family: "Anta", sans-serif;
+                  font-weight: 600;
+                  letter-spacing: 0.5rem;
+                  background-image: url(Pictures/poker-background.jpg);
+                  background-size: cover;
+                  background-repeat: no-repeat;
+                  display: flex;
+                  justify-content: center;
+            }
+            .container{
+                  color: #fff;
+                  border: none;
+                  outline: none;
+                  border-radius: 13px;
+                  box-shadow: 2px 3px #140101a1;
+                  width: 50%;
+                  margin-top: 70px;
+                  text-align: center;
+                  padding: 10px 0 30px;
+                  font-size: 1.5em;
+                  background-color: transparent;
+                  backdrop-filter: blur(30px);
+                  cursor: default;
+            }
+            .container h1{
+                  color: #daa520;
+            }
+            .container button{
+                  padding: 6px 14px;
+                  border-radius: 12px;
+                  font:inherit;
+                  letter-spacing: inherit;
+                  border: 2px solid #fff;
+                  outline: none;
+                  color: #daa520;
+                  background-color: transparent;
+                  cursor: pointer;
+                  
+            }
+            .container button:hover{
+                  border: 2px dashed #daa520;
+            }
+            
+            
+      </style>
+      <title>Poker Game</title>
+</head>
+<body>
+      <div class="container">
+            <h1>Black Jack</h1>
+            <div class="value">
+                  <p>Get 21 to Win Black Jack</p>
+                  <p id="message-el">Want to play a round?</p>
+                  <p id="cards-el">Cards:</p>
+                  <p id="sum-el">Sum:</p>
+            </div>
+            <div class="btn">
+                  <button onclick="startGame()" class="startGame-el">Start Game</button>
+                  <button onclick="newCard()" class="newCard-el">New Card</button>
+            </div>
+      </div>
+            <script>
+                  let MessageEl = document.getElementById("message-el")
+                  let CardEl = document.getElementById("cards-el")
+                  let SumEl = document.getElementById("sum-el")
+                  let StartGameEl = document.querySelector(".startGame-el")
+                  Cards = []
+                  let message = ""
+                  let sum = 0
+                  let hasBlackJack = false
+                  let isAlive = false
+                  let hasStart = false
+                  
+                  
+                  
+                  function randomNumbers() {
+                        let random = Math.floor(Math.random() * 12) + 1
+                        if (random > 10){
+                              return 10
+                        } else if (random === 1) {
+                              return 11
+                        } else {
+                              return random
+                        }
+                  }
+                  function startGame() {
+                        if (hasStart === false) {
+                              StartGameEl.textContent = "New Game"
+                              isAlive = true
+                              hasBlackJack = false
+                              let firstCard = randomNumbers()
+                              let secondCard = randomNumbers()
+                              Cards = [firstCard, secondCard]
+                              sum = firstCard + secondCard
+                              renderGame()
+                              hasStart = true
+                        }
+                  }
+                  function renderGame() {
+                        CardEl.textContent = "Cards: "
+                        SumEl.textContent = "Sum: " + sum
+                        for (let i = 0; i < Cards.length; i++){
+                              CardEl.textContent += Cards[i] + " "
+                        }
+                        if (sum < 21) {
+                              message = "Do you want to draw a new Card?"
+                        }
+                        else if (sum === 21) {
+                              message = "Yeah! You got Black Jack 🥳🥳"
+                              hasBlackJack = true
+                              hasStart = false
+                        }
+                        else {
+                              message = "Oh! No you have lost 😭😭"
+                              isAlive = false
+                              hasStart = false
+                        }
+                        MessageEl.textContent = message
+                  }
+                  function newCard() {
+                        if (isAlive === true && hasBlackJack === false) {
+                              let card = randomNumbers()
+                              sum += card
+                              Cards.push(card)
+                              renderGame()
+                        }
+                  }
+            </script>
+</body>
+</html>
